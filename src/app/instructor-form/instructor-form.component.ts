@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/switchMap';
-import { Component, OnInit, ViewChild }      from '@angular/core';
+import { Component, OnInit, ViewChild}      from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location }               from '@angular/common';
 import { NgForm } from '@angular/forms';
@@ -7,24 +7,24 @@ import { NgForm } from '@angular/forms';
 import { DataService } from '../data.service'
 
 @Component({
-  selector: 'app-student-form',
-  templateUrl: './student-form.component.html',
-  styleUrls: ['./student-form.component.css']
+  selector: 'app-instructor-form',
+  templateUrl: './instructor-form.component.html',
+  styleUrls: ['./instructor-form.component.css']
 })
-export class StudentFormComponent implements OnInit {
+export class InstructorFormComponent implements OnInit {
 
-  studentForm: NgForm;
-  @ViewChild('studentForm') currentForm: NgForm;
+  instructorForm: NgForm;
+  @ViewChild('instructorForm') currentForm: NgForm;
 
   successMessage: string;
   errorMessage: string;
 
-  student: object;
+  instructor: object;
 
   getRecordForEdit(){
     this.route.params
-      .switchMap((params: Params) => this.dataService.getRecord("student", +params['id']))
-      .subscribe(student => this.student = student);
+      .switchMap((params: Params) => this.dataService.getRecord("instructor", +params['id']))
+      .subscribe(instructor => this.instructor = instructor);
   }
 
   constructor(
@@ -41,18 +41,18 @@ export class StudentFormComponent implements OnInit {
 
   }
 
-  saveStudent(student: NgForm){
-    if(typeof student.value.student_id === "number"){
-      this.dataService.editRecord("student", student.value, student.value.student_id)
+  saveInstructor(instructor: NgForm){
+    if(typeof instructor.value.instructor_id === "number"){
+      this.dataService.editRecord("instructor", instructor.value, instructor.value.instructor_id)
           .subscribe(
-            student => this.successMessage = "Record updated succesfully",
+            instructor => this.successMessage = "Record updated succesfully",
             error =>  this.errorMessage = <any>error);
     }else{
-      this.dataService.addRecord("student", student.value)
+      this.dataService.addRecord("instructor", instructor.value)
           .subscribe(
-            student => this.successMessage = "Record added succesfully",
+            instructor => this.successMessage = "Record added succesfully",
             error =>  this.errorMessage = <any>error);
-            this.student = {};
+            this.instructor = {};
     }
 
   }
@@ -62,15 +62,15 @@ export class StudentFormComponent implements OnInit {
   }
 
   formChanged() {
-    this.studentForm = this.currentForm;
-    this.studentForm.valueChanges
+    this.instructorForm = this.currentForm;
+    this.instructorForm.valueChanges
       .subscribe(
         data => this.onValueChanged(data)
       );
   }
 
   onValueChanged(data?: any) {
-    let form = this.studentForm.form;
+    let form = this.instructorForm.form;
 
     for (let field in this.formErrors) {
       // clear previous error message (if any)
@@ -89,10 +89,9 @@ export class StudentFormComponent implements OnInit {
   formErrors = {
     'first_name': '',
     'last_name': '',
-    'sat': '',
-    'start_date': '',
-    'gpa': '',
-    'major_id': ''
+    'major_id': '',
+    'years_of_experience': '',
+    'tenured': ''
   };
 
   validationMessages = {
@@ -106,18 +105,14 @@ export class StudentFormComponent implements OnInit {
       'minlength': 'Last name must be at least 2 characters long.',
       'maxlength': 'Last name cannot be more than 30 characters long.'
     },
-    'sat': {
-      'pattern': 'Sat score must be between 400 and 1600',
-      'maxlength': 'Sat cannot be more than 4 characters long.'
-    },
-    'start_date': {
-      'pattern': 'Start date should be in the following format: YYYY-MM-DD'
-    },
-    'gpa': {
-      'pattern': 'GPA must be a decimal'
-    },
     'major_id': {
       'required': 'Major ID is required'
+    },
+    'years_of_experience': {
+      'required': 'Major ID is required'
+    },
+    'tenured': {
+      'required': 'Tenured is required'
     }
 
   };

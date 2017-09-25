@@ -8,6 +8,11 @@ table {
   margin-top: 10px;
 }
 
+#pagetitle{
+    color: red;
+    text-align: center;
+}
+
 /* Customize container */
 @media (min-width: 600px) {
     .container {
@@ -20,3 +25,12 @@ table {
         max-width: 1024px;
     }
 }
+
+
+.ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948; /* green */
+  }
+  
+  .ng-invalid:not(form)  {
+    border-left: 5px solid #a94442; /* red */
+  }
